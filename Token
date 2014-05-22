@@ -1,0 +1,85 @@
+import java.awt.Color;
+import info.gridworld.actor.Rock;
+import info.gridworld.actor.Actor;
+import info.gridworld.grid.Grid;
+import info.gridworld.grid.Location;
+import info.gridworld.grid.BoundedGrid;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.world.World;
+import java.util.Scanner;
+
+//section of ConnectFour
+public class Token extends Rock
+{
+    // instance variables - replace the example below with your own
+    private Color col;
+    
+    //Constructor
+    public Token() //
+    {
+        super(Color.BLUE);
+        col = Color.BLUE;
+    }
+
+    public Token(Color color) //initializes with color of token
+    {
+        // initialise instance variables
+        super(color);
+        col = color;
+    }
+
+    //Methods
+
+    public boolean canMove() //copied from AP guide; checks to see if token can move southward
+    {
+        Grid<Actor> gr = getGrid();
+        if (gr == null)
+            return false;
+        Location loc = getLocation();
+        Location next = loc.getAdjacentLocation(Location.SOUTH);
+        if (!gr.isValid(next))
+            return false;
+        Actor neighbor = gr.get(next);
+        return (neighbor == null); // ok to move into empty location
+        // not ok to move onto any other actor
+    }
+
+    public void moveDown() //moves token down when called
+    {
+        Location loc = getLocation();
+        moveTo(loc.getAdjacentLocation(Location.SOUTH));
+    }
+    
+    public void drop() //moves token down as far as it can
+    {
+        for(int x=0; x < 6; x++) //max can move down all the way to the bottom
+        {
+            if(!canMove()) //stop moving when can't move anymore
+            {
+                return;
+            }
+            moveDown();
+        }
+    }
+
+    public void moveRight() //moves token right when called
+    {
+        Grid<Actor> gr = getGrid();
+        Location loc = getLocation();
+        //if(loc.getAdjacentLocation(90) == null && gr.isValid(loc.getAdjacentLocation(Location.EAST)))
+        moveTo(loc.getAdjacentLocation(Location.EAST));
+    }
+
+    public void moveLeft() //moves token left when called
+    {
+        Grid<Actor> gr = getGrid();
+        Location loc = getLocation();
+        //if(loc.getAdjacentLocation(270) == null && gr.isValid(loc.getAdjacentLocation(Location.WEST)))
+        moveTo(loc.getAdjacentLocation(Location.WEST));
+    }
+    
+    public Color getColor()
+    {
+        return col;
+    }
+}
