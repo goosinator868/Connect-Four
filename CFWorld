@@ -1,0 +1,182 @@
+import java.awt.Color;
+import info.gridworld.actor.Rock;
+import info.gridworld.actor.Actor;
+import info.gridworld.grid.Grid;
+import info.gridworld.grid.Location;
+import info.gridworld.grid.BoundedGrid;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.world.World;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+/*
+ * Things that need to be finished:
+ *      Create GameOver method (frame at bottom of code; post conditions are commented above the frame)
+ *      Insert GameOver into keyPressed (location is commented) to etermine how to display outcome (who wins, if anyone)
+ *      Note: the grid is 7 x 7, but the playing field is 6 x 7. Make sure that there are no more playable moves when all but row 0 are filled
+ */
+
+//Modifies ActorWorld to Connect Four gameplay
+public class CFWorld extends ActorWorld
+{
+    // instance variables
+    private static final int ROW = 6;
+    private static final int COL = 7;
+    private boolean turn;
+    private boolean playable;
+    private Location a;
+    private Token token;
+
+    //Constructors
+    public CFWorld() //sets 7 x 7 grid
+    {
+        super(new BoundedGrid<Actor>(ROW+1, COL));
+        newGame();
+    }
+
+    public void newGame()
+    {
+        Grid gr = getGrid();
+        ArrayList<Location> l = gr.getOccupiedLocations();
+        ArrayList<Actor> act = new ArrayList<Actor>();
+        for(Location x: l) //sets actors into Array List
+        {
+            act.add((Actor)gr.get(x));
+        }
+        for(Actor a: act) //clear all Actors from grid (when playing again)
+        {
+            a.removeSelfFromGrid();
+        }
+
+        turn = true; //initializes instance variables
+        playable = true;
+        token = new Token(getColor()); //boolean turn influences what the color will be
+        a = new Location(0,3);
+        add(a, token); //put token into top of grid
+
+        //displays in yellow box instructions.
+        setMessage("Blue goes first. Make sure to click \"Run\" before playing."); 
+    }
+
+    //Reads when keys are pressed
+    //keyPressed is a Polymorphism (discovered via Google)
+    public boolean keyPressed(String description, Location loc) 
+    {
+        Grid gr = getGrid();
+        if(turn == true) // For Player 1 (Blue), can only use arrow keys and spacebar to control the token
+        {
+            if (description.equals("DOWN")) //when down key is pressed, send token to bottom of screen
+            {
+                if(token.canMove())
+                {
+                    while(token.canMove()) //drops the token (see class toke)
+                        token.drop();
+
+                    /*
+                     * insert GameOver call here to determine winner 
+                     * change playable to false when game is over & return true
+                     */
+
+                    //changes whose turn it is 
+                    if(turn) 
+                    {
+                        turn = false;
+                    }
+                    else
+                        turn = true;
+
+                    token = new Token(getColor()); //creates new token of opposite color
+                    add(a,token); //adds new token to grid
+
+                    //displays whose turn it is
+                    if(getColor() == Color.BLUE)
+                        setMessage("It is Blue's turn.");
+                    if(getColor() == Color.RED)
+                        setMessage("It is Red's turn.");
+                }
+
+            }
+            else if(description.equals("LEFT")) //move token left when left key is pressed
+            {
+                token.moveLeft();
+            }
+            else if(description.equals("RIGHT")) //move token right when right key is pressed
+            {
+                token.moveRight();
+            }
+            else if(description.equals("SPACE")) //start a new game when spacebar is pressed
+            {
+                newGame();
+            }
+        }
+        else // For Player 2 (Red), can only use arrow keys and spacebar to control the token
+        {
+            if (description.equals("S")) //when down key is pressed, send token to bottom of screen
+            {
+                if(token.canMove())
+                {
+                    while(token.canMove())
+                        token.drop();
+
+                    /*
+                     * insert GameOver call here to determine winner 
+                     * change playable to false when game is over & return true
+                     */
+
+                    //changes whose turn it is 
+                    if(turn) 
+                    {
+                        turn = false;
+                    }
+                    else
+                        turn = true;
+
+                    token = new Token(getColor()); //creates new token of opposite color
+                    add(a,token); //adds new token to grid
+
+                    //displays whose turn it is
+                    if(getColor() == Color.BLUE)
+                        setMessage("It is Blue's turn." );
+                    if(getColor() == Color.RED)
+                        setMessage("It is Red's turn.");
+                }
+
+            }
+            else if(description.equals("A")) //move token left when left key is pressed
+            {
+                token.moveLeft();
+            }
+            else if(description.equals("D")) //move token right when right key is pressed
+            {
+                token.moveRight();
+            }
+            else if(description.equals("SPACE")) //start a new game when spacebar is pressed
+            {
+                newGame();
+            }
+        }
+
+        return false; // choose not to consume the key pressed 
+    } 
+
+    public Color getColor() //returns color of token based on whose turn it is
+    {
+        if(turn == true)
+        {
+            return Color.BLUE;
+        }
+        if(turn == false)
+        {
+            return Color.RED;
+        }
+        return Color.RED;
+    }
+
+    //returns 0 if blue wins, 1 if red wins, 2 if it's a tie,
+    //and -1 if no one has won but there is still space to move
+    public int GameOver()
+    {
+        //insert code here
+        return -1;
+    }
+}
