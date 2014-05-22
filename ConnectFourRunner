@@ -1,0 +1,35 @@
+import java.awt.Color;
+import info.gridworld.actor.Rock;
+import info.gridworld.actor.Actor;
+import info.gridworld.grid.Grid;
+import info.gridworld.grid.Location;
+import info.gridworld.grid.BoundedGrid;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.world.World;
+import java.util.Scanner;
+
+public class ConnectFourRunner
+{
+    // instance variables - replace the example below with your own
+
+    public static void main(String[] args)
+    {
+        
+        System.out.println("Welcome to Connect Four!");
+        System.out.println("Press Run to begin the game!");
+        System.out.println("");
+        System.out.println("To win, connect four of your tokens in a row, column, or diagonal before your opponent does.");
+        System.out.println("");
+        System.out.println("Player 1 controls the blue tokens. \nPress the left and right arrow keys to move the token. \nPress the down arrow key to finish your turn.");
+        System.out.println("");
+        System.out.println("Player 2 controls the red tokens. \nPress the A and D keys to move the token. \nPress the S key to finish your turn.");
+        System.out.println("");
+        System.out.println("Press the spacebar to start a new game.");
+        System.out.println("Have Fun!");
+        CFWorld game = new CFWorld();
+        //ActorWorld game = new ActorWorld();
+        System.setProperty("info.gridworld.gui.selection","hide");
+        //game.add(new Location(0,0), new Token());
+        game.show();
+    }
+}
