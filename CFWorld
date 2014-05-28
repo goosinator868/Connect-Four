@@ -72,6 +72,12 @@ public class CFWorld extends ActorWorld
                     while(token.canMove()) //drops the token (see class toke)
                         token.drop();
 
+                    
+                    if (GameOver(token.getCurrentLocation()) != -1)
+                    {
+                        playable = false;
+                        return true;
+                    }
                     /*
                      * insert GameOver call here to determine winner 
                      * change playable to false when game is over & return true
@@ -117,6 +123,12 @@ public class CFWorld extends ActorWorld
                 {
                     while(token.canMove())
                         token.drop();
+                           
+                    if (GameOver(token.getCurrentLocation()) != -1)
+                    {
+                        playable = false;
+                        return true;
+                    }
 
                     /*
                      * insert GameOver call here to determine winner 
@@ -174,9 +186,9 @@ public class CFWorld extends ActorWorld
 
     //returns 0 if blue wins, 1 if red wins, 2 if it's a tie,
     //and -1 if no one has won but there is still space to move
-    public int GameOver()
+    public int GameOver(Location x)
     {
-        //insert code here
+        if 
         return -1;
     }
 }
