@@ -1,4 +1,4 @@
-import java.awt.Color;
+ import java.awt.Color;
 import info.gridworld.actor.Rock;
 import info.gridworld.actor.Actor;
 import info.gridworld.grid.Grid;
@@ -12,20 +12,17 @@ import java.util.Scanner;
 public class Token extends Rock
 {
     // instance variables - replace the example below with your own
-    private Color col;
-    
+
     //Constructor
     public Token() //
     {
         super(Color.BLUE);
-        col = Color.BLUE;
     }
 
     public Token(Color color) //initializes with color of token
     {
         // initialise instance variables
         super(color);
-        col = color;
     }
 
     //Methods
@@ -61,6 +58,13 @@ public class Token extends Rock
             moveDown();
         }
     }
+    
+
+    
+    public Color getColor()
+    {
+        return super.getColor();
+    }
 
     public void moveRight() //moves token right when called
     {
@@ -77,9 +81,5 @@ public class Token extends Rock
         //if(loc.getAdjacentLocation(270) == null && gr.isValid(loc.getAdjacentLocation(Location.WEST)))
         moveTo(loc.getAdjacentLocation(Location.WEST));
     }
-    
-    public Color getColor()
-    {
-        return col;
-    }
+
 }
