@@ -71,9 +71,8 @@ public class CFWorld extends ActorWorld
                 {
                     while(token.canMove()) //drops the token (see class toke)
                         token.drop();
-
                     
-                    if (GameOver(token.getCurrentLocation()) != -1)
+                    if (GameOver(token.getLocation()) != -1)
                     {
                         playable = false;
                         return true;
@@ -124,7 +123,7 @@ public class CFWorld extends ActorWorld
                     while(token.canMove())
                         token.drop();
                            
-                    if (GameOver(token.getCurrentLocation()) != -1)
+                    if (GameOver(token.getLocation()) != -1)
                     {
                         playable = false;
                         return true;
@@ -188,7 +187,79 @@ public class CFWorld extends ActorWorld
     //and -1 if no one has won but there is still space to move
     public int GameOver(Location x)
     {
-        if 
+        /* the idea behind this method is that it takes the just placed token's location an checks if it 
+         * creates a row of four in any direction. However if it checks one direction is has to go back to 
+         * the location of the just placed token. It will check depending on what color the token just dropped is.
+         * However the method is having issues when one token come into contact with *one* of another color. It
+         * stops the game from working, leaves you in control of your last token placed, but doesn't return anything
+         * any input on how to fix this?
+         */
+        Location test = x;
+        Grid gr = getGrid();
+        Token argh = (Token)(gr.get(test)); // this was all just to implement the color
+        
+        Color blurb = argh.getColor();
+        int count = 0; // how many in a row
+        ArrayList<Token> bors = gr.getNeighbors(x); // to see what's next to the just placed token 
+        int direction = 0; // this makes sense in a bit
+        if (blurb == Color.BLUE && bors != null) // as long as the toeen is blue and has
+        {
+            for (int i = 0; i< bors.size(); i++)
+            {
+                if (bors.get(i).getColor() == Color.BLUE)
+                {
+                    if (count == 4)
+                    {
+                        return 0;
+                    }
+                    Token mine = (Token)gr.get(x.getAdjacentLocation(direction));
+                    if(mine.getColor() == Color.BLUE)
+                    {
+                        count++;
+                        GameOver(x.getAdjacentLocation(direction));
+                    }
+                    else
+                    {
+                        count = 0;
+                        direction+=45;
+                        x = token.getLocation();
+                    }
+                }
+            }
+        }
+        else if (blurb == Color.RED && bors != null)
+        {
+            for (int i = 0; i< bors.size(); i++)
+            {
+                if (bors.get(i).getColor() == Color.RED)
+                {
+                    if (count == 4)
+                    {
+                        return 1;
+                    }
+                    Token mine = (Token)gr.get(x.getAdjacentLocation(direction));
+                    if(mine.getColor() == Color.RED)
+                    {
+                        count++;
+                        GameOver(x.getAdjacentLocation(direction));
+                    }
+                    else
+                    {
+                        count = 0;
+                        direction+=45;
+                        x = token.getLocation();
+                    }
+                }
+            }
+        }
+        else if(gr.getOccupiedLocations() != null)
+        {
+            ArrayList<Location> ano = gr.getOccupiedLocations();
+            if (ano.size() == 42) // if 42 locations are occupied, that means that the 6x7 area is filled
+            {
+                return 2;
+            }
+        }
         return -1;
     }
 }
